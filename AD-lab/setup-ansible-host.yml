@@ -1,0 +1,24 @@
+- name: ensure tools for Windows are installed
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: install required packages
+      yum:
+        name: 
+          - python-devel 
+          - krb5-devel 
+          - krb5-libs
+          - krb5-workstation
+          - python-pip
+          - gcc
+        state: latest
+    - name: install pywin
+      pip:
+         name: pywinrm
+         state: latest
+
+    - name: install pywin-kerberos
+      pip:
+         name: pywinrm[kerberos]
+         state: latest

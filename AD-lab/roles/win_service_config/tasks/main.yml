@@ -1,0 +1,63 @@
+---
+# tasks file for win_service_config
+#
+#In your Ansible project repository, create a role under roles/win_service_config/tasks/main.yml with the following characteristics:
+#The role accepts a package installs it (hint: use the win_chocolatey module )
+#ansible_distribution is defined as Microsoft Windows Server 2012 R2 Standard
+#The role accepts a service_name variable and enables it
+#ansible_distribution is defined as Microsoft Windows Server 2012 R2 Standard
+#The role accepts a service_name and creates a firewall rule based on that name
+#The role allows ingress traffic to a port based on the local_port variable and the protocol is based on the protocol_name variable
+#
+# package_name: openssh
+# parameters: /SSHServerFeature
+# service_name: SSHD
+# local_port: 22
+# protocol_name: tcp
+#
+
+- name: check parameters
+  fail:
+  when:
+    - not( (package_name is undefined) or (package_name is none) or (package_name | trim == '') )
+    - not( (service_name is undefined) or (service_name is none) or (service_name | trim == '') )
+    - not( (local_port is undefined) or (local_port is none) or (local_port | trim == '') )
+    - not( (local_port is undefined) or (local_port is none) or (local_port | trim == '') )
+    - not( (protocol_name is undefined) or (protocol_name is none) or (lprotocol_name | trim == '') )
+
+
+- name: Ensure {{ package_name }} is installed
+  win_chocolatey: 
+    name: "{{ package_name }}"
+    package_params: "{{ parameters | default(omit) }}"
+    state: present
+
+- name: Ensure {{ service_name }}  is running
+  win_service_manage:
+    name: "{{ service_name }}"
+    state: started
+    start_mode: auto
+
+- name: Enable firewall for Domain, Public and Private profiles
+  win_firewall:
+    state: enabled
+    profiles:
+    - Domain
+    - Private
+    - Public
+
+- name: Open {{ protocol_name }}/{{ local_port }}
+  win_firewall_rule:
+    name: "{{ service_name }}"
+    localport: "{{ local_port }}"
+    action: allow
+    direction: in
+    protocol: "{{ protocol_name }}"
+    state: present
+    enabled: yes
+      
+    
+
+
+
+
