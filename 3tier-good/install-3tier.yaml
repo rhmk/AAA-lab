@@ -1,0 +1,25 @@
+
+- name: Ensure Frontends are installed
+  hosts: frontends
+  become: true
+
+  roles:
+    - base
+    - haproxy
+
+- name: Ensure App Server are installed
+  hosts: apps
+  become: true
+
+  roles:
+    - base
+    - tomcat
+    - apache
+
+- name: Ensure App Server are installed
+  hosts: appdbs
+  become: true
+
+  roles:
+    - base
+    - geerlingguy.postgresql

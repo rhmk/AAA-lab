@@ -1,0 +1,6 @@
+---
+
+- name: ensure haproxy packages are installed
+  yum: 
+   name: "{{ packages }}"
+   state: latest

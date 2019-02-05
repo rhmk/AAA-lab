@@ -1,0 +1,6 @@
+---
+
+- name: ensure tomcat packages are installed
+  yum: 
+    name: "{{ packages }}"
+    state: latest

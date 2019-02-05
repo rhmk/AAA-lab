@@ -1,0 +1,33 @@
+---
+
+- name: ensure tomcat is started
+  service:
+    name: tomcat
+    state: started
+    enabled: yes
+
+- name: ensure ansible tomcat directory is created
+  file:
+    path: /usr/share/tomcat/webapps/ROOT
+    state: directory
+    mode: 0755
+
+- name: ensure tomcat ROOT content is up to date
+  template:
+    src: usr/share/tomcat/webapps/ROOT/index.html.j2
+    dest: /usr/share/tomcat/webapps/ROOT/index.html
+    mode: 0644 
+  notify: restart tomcat
+
+- name: ensure ansible webapp directory is created
+  file:
+    path: /usr/share/tomcat/webapps/ansible
+    state: directory
+    mode: 0755
+ 
+- name: ensure tomcat webapp content is up to date
+  template:
+    src: usr/share/tomcat/webapps/ansible/index.html.j2
+    dest: /usr/share/tomcat/webapps/ansible/index.html
+    mode: 0644 
+  notify: restart tomcat

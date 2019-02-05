@@ -1,0 +1,7 @@
+---
+# handlers file for haproxy
+- name: restart tomcat
+  service:
+    name: tomcat
+    state: restarted
+

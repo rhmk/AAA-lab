@@ -1,0 +1,7 @@
+---
+
+## packages to install
+
+packages:
+  - httpie
+  - haproxy

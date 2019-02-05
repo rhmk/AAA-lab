@@ -1,0 +1,23 @@
+---
+
+- name: include os specific vars
+  include_vars: '{{ item }}'
+  with_first_found:
+    - '{{ ansible_distibution }}_{{ ansible_distribution_version }}.yml'
+    - '{{ ansible_distribution }}_{{ ansible_distribution_major_version }}.yml'
+    - '{{ ansible_os_family }}.yml'
+  tags:
+    - 'role::tomcat'
+    - 'role::tomcat:install'
+    - 'role::tomcat:config'
+
+- name: include installation tasks
+  import_tasks: installation.yml
+  tags:
+    - 'role::tomcat'
+    - 'role::tomcat:install'
+
+- import_tasks: configuration.yml
+  tags:
+    - 'role::tomcat'
+    - 'role::tomcat:config'

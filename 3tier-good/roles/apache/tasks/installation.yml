@@ -1,0 +1,6 @@
+---
+
+- name: ensure apache packages are installed
+  yum: 
+    name: "{{ packages }}"
+    state: latest
