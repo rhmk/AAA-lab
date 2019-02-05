@@ -14,20 +14,21 @@
 
 - name: ensure tomcat ROOT content is up to date
   template:
-    src: usr/share/tomcat/webapps/ROOT/index.html.j2
+    src: usr/share/tomcat/webapps/ansible/index.html.j2
     dest: /usr/share/tomcat/webapps/ROOT/index.html
     mode: 0644 
   notify: restart tomcat
 
-- name: ensure ansible webapp directory is created
-  file:
-    path: /usr/share/tomcat/webapps/ansible
-    state: directory
-    mode: 0755
+# Not used as not served
+#- name: ensure ansible webapp directory is created
+#  file:
+#    path: /usr/share/tomcat/webapps/ansible
+#    state: directory
+#    mode: 0755
  
-- name: ensure tomcat webapp content is up to date
-  template:
-    src: usr/share/tomcat/webapps/ansible/index.html.j2
-    dest: /usr/share/tomcat/webapps/ansible/index.html
-    mode: 0644 
-  notify: restart tomcat
+#- name: ensure tomcat webapp content is up to date
+#  template:
+#    src: usr/share/tomcat/webapps/ansible/index.html.j2
+#    dest: /usr/share/tomcat/webapps/ansible/index.html
+#    mode: 0644 
+#  notify: restart tomcat
