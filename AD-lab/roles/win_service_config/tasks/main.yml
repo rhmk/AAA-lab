@@ -18,22 +18,23 @@
 
 - name: check parameters
   fail:
+    msg: "please provide parameters"
   when:
-    - not( (package_name is undefined) or (package_name is none) or (package_name | trim == '') )
-    - not( (service_name is undefined) or (service_name is none) or (service_name | trim == '') )
-    - not( (local_port is undefined) or (local_port is none) or (local_port | trim == '') )
-    - not( (local_port is undefined) or (local_port is none) or (local_port | trim == '') )
-    - not( (protocol_name is undefined) or (protocol_name is none) or (lprotocol_name | trim == '') )
+    - (package_name is undefined) or (package_name is none) or (package_name | trim == '')
+    - (service_name is undefined) or (service_name is none) or (service_name | trim == '')
+    - (local_port is undefined) or (local_port is none) or (local_port | trim == '')
+    - (local_port is undefined) or (local_port is none) or (local_port | trim == '') 
+    - (protocol_name is undefined) or (protocol_name is none) or (protocol_name | trim == '') 
 
 
-- name: Ensure {{ package_name }} is installed
+- name: Ensure "{{ package_name }}" is installed
   win_chocolatey: 
     name: "{{ package_name }}"
-    package_params: "{{ parameters | default(omit) }}"
+    package_params: "{{ parameters| default(omit) }}"
     state: present
 
-- name: Ensure {{ service_name }}  is running
-  win_service_manage:
+- name: Ensure "{{ service_name }}"  is running
+  win_service:
     name: "{{ service_name }}"
     state: started
     start_mode: auto
@@ -45,8 +46,9 @@
     - Domain
     - Private
     - Public
+  ignore_errors: true
 
-- name: Open {{ protocol_name }}/{{ local_port }}
+- name: Open service ports
   win_firewall_rule:
     name: "{{ service_name }}"
     localport: "{{ local_port }}"
@@ -55,6 +57,7 @@
     protocol: "{{ protocol_name }}"
     state: present
     enabled: yes
+  ignore_errors: true
       
     
 
